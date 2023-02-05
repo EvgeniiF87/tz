@@ -10,7 +10,8 @@
 
       <input 
         v-model="defaultComfirmedOrdersTo" 
-        @input="HandeleInputTo" 
+        @input="HandeleInputTo"
+        @blur="HandeleInputBlurTo" 
         type="text"
       >
     </div>
@@ -114,7 +115,8 @@
       },
 
       HandeleInputBlurTo(e) {
-        if(e.target.value === '') {
+        if(e.target.value.length === 0) {
+          this.comfirmedOrdersTo = this.users.map(user => Math.max(user.comfirmedOrders))[0] + 1
           this.defaultComfirmedOrdersTo = 'до'
         }
       }
