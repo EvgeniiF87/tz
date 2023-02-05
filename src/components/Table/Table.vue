@@ -3,6 +3,7 @@
   <div class="search-wrap">
     <Search />
     <div class="comfirmed-orders">
+     <label for="">По подтвержденным заказам</label>
       <input v-model="defaultComfirmedOrdersFrom" @input="HandeleInputFrom" type="text">
 
       <div> &#8211; </div>
@@ -139,6 +140,15 @@
     align-items: center;
     width: 60%;
     margin-left: 20px;
+
+    & label {
+      margin-right: 10px;  
+      padding: 10px 10px;
+      background-color: #AFCDE7;
+      border-radius: 6px 0 0 6px;
+      color: #fff;
+      font-size: 18px;
+    }
 
     & div {
       margin: 0 5px;
