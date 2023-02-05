@@ -115,7 +115,6 @@
       HandeleInputBlurTo(e) {
         if(e.target.value === '') {
           this.defaultComfirmedOrdersTo = 'до'
-          this.filteredUsers()
         }
       }
     },
