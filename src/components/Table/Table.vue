@@ -1,5 +1,4 @@
 <template>
-
   <div class="search-wrap">
     <Search />
     <div class="comfirmed-orders">
@@ -31,7 +30,7 @@
     </thead>
 
     <tbody>
-      <TR v-if="isSearch" :users="filteredUsers"></TR>
+      <TR v-if="isSearch" :users="filteredLoginAndStatusUser"></TR>
 
       <tr v-else>
         <td colspan="4">Пользователь(-и) не найден(-ы)</td>
@@ -93,15 +92,19 @@
         this.comfirmedOrdersFrom = 0
         this.comfirmedOrdersTo = this.users.map(user => Math.max(user.comfirmedOrders))[0] + 1
       },
+
+      generatedLink() {
+        this.$router.push({path: '/', query: { uaser: this.searchValue, comfirmedOrdersFrom: this.comfirmedOrdersFrom, comfirmedOrdersTo: this.comfirmedOrdersTo }})
+      },
     },
 
     methods: {
       sortedTable(value) {
          this.users.sort((a, b) => {
             if(this.users.find(field => typeof field[value] !== 'number')) {
-              return a[value].localeCompare(b[value])
+              return (a[value] < b[value]) ? a[value].localeCompare(b[value]) : b[value].localeCompare(a[value])
             } else {
-              return a[value] - b[value]
+              return (a[value] > b[value]) ? b[value] - a[value] :  a[value] - b[value]
             }
          })
       },
