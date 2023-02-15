@@ -22,9 +22,9 @@ export default {
     HandeleInput(e) {
       if(e.target.value.length > 0 && e.target.value !== 'Поиск пользователей') {
         this.value = e.target.value
-        this.$store.dispatch('INPUT_SEARCH_VALUE', e.target.value)
+        this.$store.dispatch('SEARCH_VALUE_ACTION', e.target.value)
       } else {
-        this.$store.dispatch('INPUT_SEARCH_VALUE', '')
+        this.$store.dispatch('SEARCH_VALUE_ACTION', '')
       }
     },
 
@@ -39,10 +39,10 @@ export default {
     HandleInputBlur(e) {
       if(e.target.value.length > 0 && e.target.value !== 'Поиск пользователей') {
         this.value = e.target.value
-        this.$store.dispatch('INPUT_SEARCH_VALUE', e.target.value)
+        this.$store.dispatch('SEARCH_VALUE_ACTION', e.target.value)
       } else {
         this.value = 'Поиск пользователей'
-        this.$store.dispatch('INPUT_SEARCH_VALUE', '')
+        this.$store.dispatch('SEARCH_VALUE_ACTION', '')
       }
     }
   },

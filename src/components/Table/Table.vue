@@ -1,28 +1,10 @@
 <template>
-  <div class="search-wrap">
-    <Search />
-    <div class="comfirmed-orders">
-     <label>По подтвержденным заказам</label>
-      <input v-model="defaultComfirmedOrdersFrom" @input="HandeleInputFrom" type="text">
-
-      <div> &#8211; </div>
-
-      <input 
-        v-model="defaultComfirmedOrdersTo" 
-        @input="HandeleInputTo"
-        @blur="HandeleInputBlurTo" 
-        type="text"
-      >
-    </div>
-  </div>
-  
   <table>
     <thead>
       <tr>
         <th
           v-for="thed in tHeadList" 
           :key="thed.value" 
-          @click="sortedTable(thed.value)"
         >
           {{ thed.title }}
         </th>
@@ -42,25 +24,10 @@
 
 <script>
   import TR from './TR.vue';
-  import Search from '../Input/InputSearch.vue';
+ 
   export default {
     components: {
-      TR, Search
-    },
-
-    data() {
-      return {
-        tHeadList: [
-          {title: 'Место', value: 'position'},
-          {title: 'Логин', value: 'login'},
-          {title: 'Подтвержденные заказы', value: 'comfirmedOrders'},
-          {title: 'Статус', value: 'status'},
-        ],
-        comfirmedOrdersFrom: '',
-        comfirmedOrdersTo: '',
-        defaultComfirmedOrdersFrom: 'от',
-        defaultComfirmedOrdersTo: 'до',
-      }
+      TR,
     },
 
     computed: {
@@ -68,67 +35,55 @@
         return this.$store.getters.USERS
       },
 
-      isSearch() {
-        return this.$store.getters.SEARCH
-      },
-
       searchValue() {
         return this.$store.getters.SEARCH_VALUE
       },
 
+      tHeadList() {
+        return this.$store.getters.THEAD_LIST
+      },
+
+      isSearch() {
+        return this.$store.getters.SEARCH
+      },
+
       filteredLoginAndStatusUser() {
+        const status = this.$route.query.status ?? ''
+        const sorted = this.$route.query.sorted ?? ''
+        const order = this.$route.query.order ?? ''
         return [...this.users].filter(user => {
-          return user.login.includes(this.searchValue) || user.status.includes(this.searchValue)
+          return user.login.includes(this.searchValue) && user.status.includes(status)
         })
-      },
-
-      filteredUsers() {
-        return this.filteredLoginAndStatusUser.filter(user => {
-          return user.comfirmedOrders > +this.comfirmedOrdersFrom && user.comfirmedOrders < +this.comfirmedOrdersTo + 1
-        })
-      },
-
-      defaultValue() {
-        this.comfirmedOrdersFrom = 0
-        this.comfirmedOrdersTo = this.users.map(user => Math.max(user.comfirmedOrders))[0] + 1
-      },
-
-      generatedLink() {
-        this.$router.push({path: '/', query: { uaser: this.searchValue, comfirmedOrdersFrom: this.comfirmedOrdersFrom, comfirmedOrdersTo: this.comfirmedOrdersTo }})
-      },
-    },
-
-    methods: {
-      sortedTable(value) {
-         this.users.sort((a, b) => {
-            if(this.users.find(field => typeof field[value] !== 'number')) {
-              return (a[value] < b[value]) ? a[value].localeCompare(b[value]) : b[value].localeCompare(a[value])
-            } else {
-              return (a[value] > b[value]) ? b[value] - a[value] :  a[value] - b[value]
+        .sort((a, b) => {
+            if(sorted || status || order) {
+              if(this.users.find(field => typeof field[sorted] !== 'number')) {
+                if(order === 'DESC') {
+                  return a[sorted].localeCompare(b[sorted])
+                } else if(order === 'ASC') {
+                  return b[sorted].localeCompare(a[sorted])
+                }
+              } else {
+                if(order === 'DESC') {
+                  return a[sorted] - b[sorted]
+                } else if(order === 'ASC') {
+                  return b[sorted] - a[sorted]
+                }
+              }
             }
          })
       },
 
-      HandeleInputFrom(e) {
-        return (e.target.value === '1') ? this.comfirmedOrdersFrom = 0 : this.comfirmedOrdersFrom = +e.target.value
-      },
-
-      HandeleInputTo(e) {
-        this.comfirmedOrdersTo = +e.target.value
-      },
-
-      HandeleInputBlurTo(e) {
-        if(e.target.value.length === 0) {
-          this.comfirmedOrdersTo = this.users.map(user => Math.max(user.comfirmedOrders))[0] + 1
-          this.defaultComfirmedOrdersTo = 'до'
-        }
-      }
+      // filteredUsers() {
+      //   return this.filteredLoginAndStatusUser.filter(user => {
+      //     return user.comfirmedOrders > +this.comfirmedOrdersFrom && user.comfirmedOrders < +this.comfirmedOrdersTo + 1
+      //   })
+      // },
     },
     
     watch: {
-      filteredUsers(newValue) {
+      filteredLoginAndStatusUser(newValue) {
         this.$store.dispatch('IS_SEARCH', newValue.length ? true : false)
-      }
+      },
     },
   }
 </script>
