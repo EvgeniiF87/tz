@@ -1,15 +1,21 @@
 <template>
   <router-link :to="
     {
-      path: '/result', 
-      query: {status: this.getStatusValue, sorted: this.getSortedValue, order: this.getOrderValue}
+      path: '/', 
+      query: {
+        status: this.getStatusValue, 
+        sorted: this.getSortedValue,
+        comfirmed_orders_from: this.getComfirmedOrdersFrom,
+        comfirmed_orders_to: this.getComfirmedOrdersTo,
+        order: this.getOrderValue
+      }
     }
   ">
     RESULT
   </router-link>
-  <hr />
+
   <FilterBar />
-  <hr />
+
   <Table />
 </template>
 
@@ -33,19 +39,15 @@ export default {
     getOrderValue() {
       return this.$store.getters.ORDER_VALUE
     },
-  },
 
-  methods: {
-    generatedLink() {
-      const status = (this.getStatusValue.length) ? this.getStatusValue : null
-      const sorted = (this.getSortedValue.length) ? this.getSortedValue : null
-      const order = (this.getOrderValue.length) ? this.getOrderValue : null
-      return this.$router.push({
-        path: '/result',
-        query: {status, sorted, order}
-      })
+    getComfirmedOrdersFrom() {
+      return this.$store.getters.COMFIRMED_ORDERS_FROM
+    },
+
+    getComfirmedOrdersTo() {
+      return this.$store.getters.COMFIRMED_ORDERS_TO
     }
-  },
+  }
 }
 </script>
 

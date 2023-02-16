@@ -1,8 +1,8 @@
 <template>
- <select v-model="selectValue" @change="selectChange">
+ <select v-model="selectValue" @change="selectChange" class="select">
   <!-- <option v-if="selectType === 'status'" :value="all_status">Все</option> -->
   <option disabled value="">Выберите из списка</option>
-  
+
   <option
     v-if="(this.$route.query)"
     v-for="option in optionList"
@@ -56,8 +56,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  select {
+  .select {
     padding: 10px;
-    margin: 0 5px;
+    margin: 5px 0;
+    width: 70%;
   }
 </style>

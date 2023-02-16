@@ -51,16 +51,14 @@ export default {
 
 <style lang="scss" scoped>
   .input {
-    width: 30%;
+    width: 80%;
     padding: 10px 3px;
-    border: 1px solid #4a97df;
-    background-color: #AFCDE7;
     border-radius: 6px;
-    color: #fff;
+    border: 1px solid #6e6a6a;
+    color: #9d9b9b;
     font-size: 16px;
 
     &:focus {
-      border: 1px solid #4a97df;
       outline: none;
     }
   }

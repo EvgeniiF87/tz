@@ -48,11 +48,16 @@
       },
 
       filteredLoginAndStatusUser() {
+
         const status = this.$route.query.status ?? ''
         const sorted = this.$route.query.sorted ?? ''
+        const comfirmed_orders_from = (!this.$route.query.comfirmed_orders_from || this.$route.query.comfirmed_orders_from === '') ? 0 : this.$route.query.comfirmed_orders_from
+        const comfirmed_orders_to = (!this.$route.query.comfirmed_orders_to || this.$route.query.comfirmed_orders_to === '') ? this.users.map(user => Math.max(user.comfirmedOrders))[0] + 1 : this.$route.query.comfirmed_orders_to
         const order = this.$route.query.order ?? ''
+
         return [...this.users].filter(user => {
-          return user.login.includes(this.searchValue) && user.status.includes(status)
+          return user.login.includes(this.searchValue) && user.status.includes(status) &&
+            user.comfirmedOrders >= +comfirmed_orders_from && user.comfirmedOrders <= +comfirmed_orders_to
         })
         .sort((a, b) => {
             if(sorted || status || order) {
@@ -71,13 +76,7 @@
               }
             }
          })
-      },
-
-      // filteredUsers() {
-      //   return this.filteredLoginAndStatusUser.filter(user => {
-      //     return user.comfirmedOrders > +this.comfirmedOrdersFrom && user.comfirmedOrders < +this.comfirmedOrdersTo + 1
-      //   })
-      // },
+      }
     },
     
     watch: {
@@ -89,46 +88,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .search-wrap {
-    display: flex;
-    width: 100%;
-    margin-bottom: 20px;
+  table {
+    margin-top: 10px;
   }
-
-  .comfirmed-orders {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    width: 60%;
-    margin-left: 20px;
-
-    & label {
-      padding: 10px 0;
-      margin-right: 10px;
-      border-radius: 6px;
-      color: #4a97df;
-      font-size: 18px;
-    }
-
-    & div {
-      margin: 0 5px;
-      color: #4a97df;
-    }
-
-    & input {
-      width: 10%;
-      padding: 10px 3px;
-      border: 1px solid #4a97df;
-      background-color: #AFCDE7;
-      border-radius: 6px;
-      color: #fff;
-      font-size: 16px;
-
-      &:focus {
-        border: 1px solid #4a97df;
-        outline: none;
-      }
-    }
-  }
-
 </style>
