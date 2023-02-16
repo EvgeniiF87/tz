@@ -1,19 +1,13 @@
 <template>
  <select v-model="selectValue" @change="selectChange" class="select">
-  <!-- <option v-if="selectType === 'status'" :value="all_status">Все</option> -->
-  <option disabled value="">Выберите из списка</option>
+  <option disabled value="default">Выберите из списка</option>
 
   <option
-    v-if="(this.$route.query)"
     v-for="option in optionList"
-    :selected="getQueryParam"
     :key="option.value"
     :value="option.value"
+    :selected="getQueryParam"
   >
-    {{ option.title}}
-  </option>
-
-  <option v-else v-for="option in optionList" :value="option.value">
     {{ option.title }}
   </option>
 
@@ -25,7 +19,7 @@ export default {
   data() {
     return {
       selectValue: {
-        type: String
+        type: String,
       },
     }
   },
@@ -45,6 +39,12 @@ export default {
     getQueryParam() {
       return this.$route.query[this.selectType] ?? false
     },
+
+    selectedQueryValue() {
+      if (this.getQueryParam) {
+        this.selectValue = this.getQueryParam[this.selectType] ?? ''
+      }
+    }
   },
 
   methods: {

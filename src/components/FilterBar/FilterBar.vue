@@ -36,11 +36,15 @@
         selectSortModel: '',
         selectStatusModel: '',
         selectOrder: '',
-        popup: false
+        popup: true
       }
     },
 
     computed: {
+      getQueryParam() {
+        return this.$route.query
+      },
+
       users() {
         return this.$store.getters.USERS
       },
@@ -63,7 +67,7 @@
     },
 
     methods: {
-      HandleFilterBtn(e) {
+      HandleFilterBtn() {
         this.popup = !this.popup
       }
     },
@@ -79,6 +83,10 @@
 
       selectOrder(newValue) {
         this.$store.dispatch('ORDER_VALUE_ACTION', newValue)
+      },
+
+      getQueryParam(newValue) {
+        this.selectStatusModel = newValue.status
       }
     },
   }
