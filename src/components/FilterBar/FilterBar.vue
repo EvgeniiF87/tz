@@ -16,6 +16,8 @@
 
         <ComfirmedOrders />
 
+        <button class="result_btn" @click="HandleResult">Применить</button>
+
       </div>
     </div>
   </div>
@@ -36,13 +38,21 @@
         selectSortModel: '',
         selectStatusModel: '',
         selectOrder: '',
-        popup: true
+        popup: false
       }
     },
 
     computed: {
       getQueryParam() {
         return this.$route.query
+      },
+
+      getComfirmedOrdersFrom() {
+        return this.$store.getters.COMFIRMED_ORDERS_FROM
+      },
+
+      getComfirmedOrdersTo() {
+        return this.$store.getters.COMFIRMED_ORDERS_TO
       },
 
       users() {
@@ -59,16 +69,40 @@
 
       optionStatusList() {
         const list = []
+        const status = []
+
+        status.push({title: 'Все', value: 'все'})
+
         this.users.map( user => list.push(user.status))
-        return list.filter((item, index) => index === list.indexOf(item)).map(value => {
-          return {title: value.charAt(0).toUpperCase() + value.slice(1), value: value}
+
+        list.filter((item, index) => index === list.indexOf(item)).map(value => {
+          status.push({title: value.charAt(0).toUpperCase() + value.slice(1), value: value})
         })
+
+        return status
       }, 
     },
 
     methods: {
       HandleFilterBtn() {
         this.popup = !this.popup
+      },
+
+      HandleResult() {
+        this.popup = false
+
+        this.$router.push(
+          {
+            path: '/', 
+            query: {
+              status: this.selectStatusModel, 
+              sorted: this.selectSortModel,
+              comfirmed_orders_from: this.getComfirmedOrdersFrom,
+              comfirmed_orders_to: this.getComfirmedOrdersTo,
+              order: this.selectOrder
+            }
+          }
+        )
       }
     },
 
@@ -91,7 +125,7 @@
 <style lang="scss" scoped>
 .wrap {
   width: 100%;
- margin-top: 10px;
+  margin-top: 10px;
   display: flex;
   justify-content: space-between;
 
@@ -100,7 +134,7 @@
     width: 10%;
     padding: 0;
     display: block;
-    color: #9d9b9b;
+    //color: #9d9b9b;
 
     &__btn {
       width: 100%;
@@ -110,10 +144,16 @@
       color: #9d9b9b;
       background: none;
       font-size: 12px;
+      transition: color .2s ease-in-out;
+
+      &:hover {
+        cursor: pointer;
+        color: #6e6a6a;
+      }
     }
 
     &__popup {
-      width: 200px;
+      width: 230px;
       margin-top: 5px;
       padding: 10px 0;
       position: absolute;
@@ -131,11 +171,27 @@
 
   .title {
     width: 100%;
-    font-size: 12px;
+    font-size: 13px;
     display: flex;
     justify-content: center;
     align-items: center;
-      }
+    color: #6e6a6a;
+  }
+  .result_btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border-radius: 3px;
+    border: 1px solid #6e6a6a;
+    color: #9d9b9b;
+    background: none;
+    font-size: 13px;
+    transition: color .2s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      color: #6e6a6a;
+    }
+  }
 }
 
 </style>

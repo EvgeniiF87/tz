@@ -56,8 +56,13 @@
         const order = this.$route.query.order ?? ''
 
         return [...this.users].filter(user => {
-          return user.login.includes(this.searchValue) && user.status.includes(status) &&
-            user.comfirmedOrders >= +comfirmed_orders_from && user.comfirmedOrders <= +comfirmed_orders_to
+          if (status === 'все') {
+            return user.login.includes(this.searchValue) && 
+              user.comfirmedOrders >= +comfirmed_orders_from && user.comfirmedOrders <= +comfirmed_orders_to
+          } else {
+            return user.login.includes(this.searchValue) && user.status.includes(status) &&
+              user.comfirmedOrders >= +comfirmed_orders_from && user.comfirmedOrders <= +comfirmed_orders_to
+          }
         })
         .sort((a, b) => {
             if(sorted || status || order) {

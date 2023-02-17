@@ -37,8 +37,8 @@ export default {
 
     filteredResult() {
       if (this.getQueryParam) {
-        this.ComfirmedOrdersFrom = this.getQueryParam['comfirmed_orders_from'] ?? ''
-        this.ComfirmedOrdersTo = this.getQueryParam['comfirmed_orders_to'] ?? ''
+        this.ComfirmedOrdersFrom = this.getQueryParam['comfirmed_orders_from']
+        this.ComfirmedOrdersTo = this.getQueryParam['comfirmed_orders_to']
       }
     }
   },
@@ -61,10 +61,11 @@ export default {
   flex-direction: column;
 
   & .title {
-    font-size: 12px;
+    font-size: 13px;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #6e6a6a;
   }
 
   & .inputs {
@@ -82,6 +83,7 @@ export default {
       width: 30%;
       padding: 5px 0;
       text-align: center;
+      color: #9d9b9b;
 
       &:focus {
         outline: none;

@@ -1,12 +1,13 @@
 <template>
  <select v-model="selectValue" @change="selectChange" class="select">
+  
   <option value="" disabled>Выберите из списка</option>
 
   <option
     v-for="option in optionList"
     :key="option.value"
     :value="option.value"
-    :selected="option.value === getQueryParam"
+    :selected="option.value === selectValue"
   >
     {{ option.title }}
   </option>
@@ -40,7 +41,7 @@ export default {
 
     selectedQueryValue() {
       if (this.getQueryParam) {
-        this.selectValue = this.getQueryParam[this.selectType] ?? ''
+        this.selectValue = this.getQueryParam
       }
     }
   },
@@ -49,7 +50,7 @@ export default {
     selectChange(event) {
       this.$emit('update:selectValue', event.target.value)
     }
-  },
+  }
 }
 </script>
 
@@ -59,7 +60,7 @@ export default {
     margin: 5px 0;
     width: 70%;
     color: #9d9b9b;
-    font-size: 11px;
+    font-size: 12px;
 
     &:focus {
       outline: none;
