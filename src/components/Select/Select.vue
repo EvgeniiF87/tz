@@ -1,12 +1,12 @@
 <template>
  <select v-model="selectValue" @change="selectChange" class="select">
-  <option disabled value="default">Выберите из списка</option>
+  <option value="" disabled>Выберите из списка</option>
 
   <option
     v-for="option in optionList"
     :key="option.value"
     :value="option.value"
-    :selected="getQueryParam"
+    :selected="option.value === getQueryParam"
   >
     {{ option.title }}
   </option>
@@ -18,9 +18,7 @@
 export default {
   data() {
     return {
-      selectValue: {
-        type: String,
-      },
+      selectValue: ''
     }
   },
 
@@ -32,7 +30,7 @@ export default {
       selectType: {
         type: String,
         default: ''
-      }
+      },
   },
 
   computed: {
@@ -60,5 +58,11 @@ export default {
     padding: 10px;
     margin: 5px 0;
     width: 70%;
+    color: #9d9b9b;
+    font-size: 11px;
+
+    &:focus {
+      outline: none;
+    }
   }
 </style>

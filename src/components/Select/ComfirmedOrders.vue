@@ -69,6 +69,7 @@ export default {
 
   & .inputs {
     width: 100%;
+    margin-top: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -80,6 +81,7 @@ export default {
     & input {
       width: 30%;
       padding: 5px 0;
+      text-align: center;
 
       &:focus {
         outline: none;

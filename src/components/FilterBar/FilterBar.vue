@@ -5,7 +5,7 @@
       <button class="filter__btn" @click="HandleFilterBtn">фильтр</button>
       <div @click.stop v-if="popup" class="filter__popup">
         
-        <div class="title">Отфильтровать  по статусу:</div>
+        <div class="title">Отфильтровать по статусу:</div>
         <Select v-model="selectStatusModel" :selectType="'status'" :optionList="optionStatusList" />
 
         <div class="title">Сортировать по:</div>
@@ -83,10 +83,6 @@
 
       selectOrder(newValue) {
         this.$store.dispatch('ORDER_VALUE_ACTION', newValue)
-      },
-
-      getQueryParam(newValue) {
-        this.selectStatusModel = newValue.status
       }
     },
   }
