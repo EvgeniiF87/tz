@@ -1,197 +1,178 @@
-<template>
-  <div class="wrap">
-    <Search />
-    <div class="filter">
-      <button class="filter__btn" @click="HandleFilterBtn">фильтр</button>
-      <div @click.stop v-if="popup" class="filter__popup">
-        
-        <div class="title">Отфильтровать по статусу:</div>
-        <Select v-model="selectStatusModel" :selectType="'status'" :optionList="optionStatusList" />
-
-        <div class="title">Сортировать по:</div>
-        <Select v-model="selectSortModel" :selectType="'sorted'" :optionList="optionSortList" />
-
-        <div class="title">Порядок сортировки:</div>
-        <Select v-model="selectOrder" :selectType="'order'" :optionList="ordersList" />
-
-        <ComfirmedOrders />
-
-        <button class="result_btn" @click="HandleResult">Применить</button>
-
-      </div>
-    </div>
-  </div>
-</template>
-
 <script>
-  import Search from '../Input/InputSearch.vue';
-  import Select from '../Select/Select.vue';
-  import ComfirmedOrders from '../Select/ComfirmedOrders.vue';
+import Search from "../Input/InputSearch.vue"
+import Select from "../Select/Select.vue"
+import ComfirmedOrders from "../Select/ComfirmedOrders.vue"
+import IconBase from "../IconBase/IconBase.vue"
+import FilterIcon from "../icons/FilterIcon.vue"
+import style from "./filter-bar.module.scss"
 
-  export default {
-    components: {
-      Search, Select, ComfirmedOrders
-    },
+export default {
+	components: {
+		Search,
+		Select,
+		ComfirmedOrders,
+		IconBase,
+		FilterIcon,
+	},
 
-    data() {
-      return {
-        selectSortModel: '',
-        selectStatusModel: '',
-        selectOrder: '',
-        popup: false
-      }
-    },
+	created() {
+		window.addEventListener("resize", this.resizeHandle)
+	},
 
-    computed: {
-      getQueryParam() {
-        return this.$route.query
-      },
+	destroyed() {
+		window.removeEventListener("resize", this.resizeHandle)
+	},
 
-      getComfirmedOrdersFrom() {
-        return this.$store.getters.COMFIRMED_ORDERS_FROM
-      },
+	data() {
+		return {
+			selectSortModel: "",
+			selectStatusModel: "",
+			selectOrder: "",
+			popup: false,
+			windowWidth: 0,
+			style,
+		}
+	},
 
-      getComfirmedOrdersTo() {
-        return this.$store.getters.COMFIRMED_ORDERS_TO
-      },
+	computed: {
+		getQueryParam() {
+			return this.$route.query
+		},
 
-      users() {
-        return this.$store.getters.USERS
-      },
+		getComfirmedOrdersFrom() {
+			return this.$store.getters.COMFIRMED_ORDERS_FROM
+		},
 
-      optionSortList() {
-        return this.$store.getters.THEAD_LIST
-      },
+		getComfirmedOrdersTo() {
+			return this.$store.getters.COMFIRMED_ORDERS_TO
+		},
 
-      ordersList() {
-        return this.$store.getters.ORDERS_LIST
-      },
+		users() {
+			return this.$store.getters.USERS
+		},
 
-      optionStatusList() {
-        const list = []
-        const status = []
+		optionSortList() {
+			return this.$store.getters.THEAD_LIST
+		},
 
-        status.push({title: 'Все', value: 'все'})
+		ordersList() {
+			return this.$store.getters.ORDERS_LIST
+		},
 
-        this.users.map( user => list.push(user.status))
+		optionStatusList() {
+			const list = []
+			const status = []
 
-        list.filter((item, index) => index === list.indexOf(item)).map(value => {
-          status.push({title: value.charAt(0).toUpperCase() + value.slice(1), value: value})
-        })
+			status.push({ title: "Все", value: "все" })
 
-        return status
-      }, 
-    },
+			this.users.map((user) => list.push(user.status))
 
-    methods: {
-      HandleFilterBtn() {
-        this.popup = !this.popup
-      },
+			list
+				.filter((item, index) => index === list.indexOf(item))
+				.map((value) => {
+					status.push({
+						title: value.charAt(0).toUpperCase() + value.slice(1),
+						value: value,
+					})
+				})
 
-      HandleResult() {
-        this.popup = false
+			return status
+		},
+	},
 
-        this.$router.push(
-          {
-            path: '/', 
-            query: {
-              status: this.selectStatusModel, 
-              sorted: this.selectSortModel,
-              comfirmed_orders_from: this.getComfirmedOrdersFrom,
-              comfirmed_orders_to: this.getComfirmedOrdersTo,
-              order: this.selectOrder
-            }
-          }
-        )
-      }
-    },
+	methods: {
+		HandleFilterBtn() {
+			this.popup = !this.popup
+		},
 
-    watch: {
-      selectSortModel(newValue) {
-        this.$store.dispatch('SORTED_VALUE_ACTION', newValue)
-      },
+		HandleResult() {
+			this.popup = false
 
-      selectStatusModel(newValue) {
-        this.$store.dispatch('STATUS_VALUE_ACTION', newValue)
-      },
+			this.$router.push({
+				path: "/",
+				query: {
+					status: this.selectStatusModel,
+					sorted: this.selectSortModel,
+					comfirmed_orders_from: this.getComfirmedOrdersFrom,
+					comfirmed_orders_to: this.getComfirmedOrdersTo,
+					order: this.selectOrder,
+				},
+			})
+		},
 
-      selectOrder(newValue) {
-        this.$store.dispatch('ORDER_VALUE_ACTION', newValue)
-      }
-    },
-  }
+		resizeHandle() {
+			this.windowWidth = document.documentElement.clientWidth
+		},
+	},
+
+	watch: {
+		selectSortModel(newValue) {
+			this.$store.dispatch("SORTED_VALUE_ACTION", newValue)
+		},
+
+		selectStatusModel(newValue) {
+			this.$store.dispatch("STATUS_VALUE_ACTION", newValue)
+		},
+
+		selectOrder(newValue) {
+			this.$store.dispatch("ORDER_VALUE_ACTION", newValue)
+		},
+
+		popup(newValue) {
+			if (newValue === true) {
+				this.selectStatusModel = this.getQueryParam["status"]
+			}
+		},
+	},
+}
 </script>
 
-<style lang="scss" scoped>
-.wrap {
-  width: 100%;
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
+<template>
+	<div :class="style.wrap">
+		<Search />
+		<div :class="style.filter">
+			<button
+				v-if="windowWidth <= 799"
+				:class="style.filter__btn"
+				@click.stop="HandleFilterBtn"
+			>
+				<IconBase :width="windowWidth <= 520 ? 16 : 18">
+					<FilterIcon />
+				</IconBase>
+			</button>
 
-  .filter {
-    position: relative;
-    width: 10%;
-    padding: 0;
-    display: block;
-    //color: #9d9b9b;
+			<button v-else :class="style.filter__btn" @click.stop="HandleFilterBtn">
+				Фильтр
+			</button>
 
-    &__btn {
-      width: 100%;
-      height: 100%;
-      border-radius: 6px;
-      border: 1px solid #6e6a6a;
-      color: #9d9b9b;
-      background: none;
-      font-size: 12px;
-      transition: color .2s ease-in-out;
+			<div @click.stop v-if="popup" :class="style.filter__popup">
+				<div :class="style.title">Отфильтровать по статусу:</div>
+				<Select
+					v-model="selectStatusModel"
+					:selectType="'status'"
+					:optionList="optionStatusList"
+				/>
 
-      &:hover {
-        cursor: pointer;
-        color: #6e6a6a;
-      }
-    }
+				<div :class="style.title">Сортировать по:</div>
+				<Select
+					v-model="selectSortModel"
+					:selectType="'sorted'"
+					:optionList="optionSortList"
+				/>
 
-    &__popup {
-      width: 230px;
-      margin-top: 5px;
-      padding: 10px 0;
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      top: 100%;
-      right: -50%;
-      background-color: #ffffff;
-      border: 1px solid #6e6a6a;
-      border-radius: 3px;
-    }
-  }
+				<div :class="style.title">Порядок сортировки:</div>
+				<Select
+					v-model="selectOrder"
+					:selectType="'order'"
+					:optionList="ordersList"
+				/>
 
-  .title {
-    width: 100%;
-    font-size: 13px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #6e6a6a;
-  }
-  .result_btn {
-    margin-top: 20px;
-    padding: 10px 20px;
-    border-radius: 3px;
-    border: 1px solid #6e6a6a;
-    color: #9d9b9b;
-    background: none;
-    font-size: 13px;
-    transition: color .2s ease-in-out;
+				<ComfirmedOrders />
 
-    &:hover {
-      cursor: pointer;
-      color: #6e6a6a;
-    }
-  }
-}
-
-</style>
+				<button :class="style.result_btn" @click="HandleResult">
+					Применить
+				</button>
+			</div>
+		</div>
+	</div>
+</template>

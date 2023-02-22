@@ -1,5 +1,5 @@
 <template>
-	<select v-model="selectValue" @change="selectChange" class="select">
+	<select v-model="selectValue" @change="selectChange" :class="style.select">
 		<option value="" disabled>Выберите из списка</option>
 
 		<option
@@ -14,10 +14,19 @@
 </template>
 
 <script>
+import style from "./select.module.scss"
+
 export default {
 	data() {
 		return {
 			selectValue: "",
+			style,
+		}
+	},
+
+	created() {
+		if (this.getQueryParam) {
+			this.selectValue = this.getQueryParam
 		}
 	},
 
@@ -36,12 +45,6 @@ export default {
 		getQueryParam() {
 			return this.$route.query[this.selectType] ?? false
 		},
-
-		selectedQueryValue() {
-			if (this.getQueryParam) {
-				this.selectValue = this.getQueryParam
-			}
-		},
 	},
 
 	methods: {
@@ -51,17 +54,3 @@ export default {
 	},
 }
 </script>
-
-<style lang="scss" scoped>
-.select {
-	padding: 10px;
-	margin: 5px 0;
-	width: 70%;
-	color: #9d9b9b;
-	font-size: 12px;
-
-	&:focus {
-		outline: none;
-	}
-}
-</style>

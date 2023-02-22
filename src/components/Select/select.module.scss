@@ -1,0 +1,11 @@
+.select {
+	padding: 10px;
+	margin: 5px 0;
+	width: 70%;
+	color: #9d9b9b;
+	font-size: 12px;
+
+	&:focus {
+		outline: none;
+	}
+}

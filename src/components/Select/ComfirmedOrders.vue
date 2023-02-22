@@ -1,95 +1,62 @@
-<template>
-  <div class="wrap">
-    <div class="title">По подтвержденным заказам</div>
-    <div class="inputs">
-      <input 
-        v-model="ComfirmedOrdersFrom" 
-        @input="HandeleInputFrom" 
-        type="number" 
-        placeholder="от"
-      >
-
-      <div class="difis"> &#8211; </div>
-
-      <input 
-        v-model="ComfirmedOrdersTo" 
-        @input="HandeleInputTo"
-        type="number"
-        placeholder="до"
-      >
-    </div>
-  </div>
-</template>
-
 <script>
+import style from "./comfirmed-orders.module.scss"
+
 export default {
-  data() {
-    return {
-      ComfirmedOrdersFrom: '',
-      ComfirmedOrdersTo: ''
-    }
-  },
+	data() {
+		return {
+			ComfirmedOrdersFrom: "",
+			ComfirmedOrdersTo: "",
+			style,
+		}
+	},
 
-  computed: {
-    getQueryParam() {
-      return this.$route.query ?? false
-    },
+	created() {
+		if (this.getQueryParam) {
+			this.ComfirmedOrdersFrom = this.getQueryParam["comfirmed_orders_from"]
+			this.ComfirmedOrdersTo = this.getQueryParam["comfirmed_orders_to"]
+		}
+	},
 
-    filteredResult() {
-      if (this.getQueryParam) {
-        this.ComfirmedOrdersFrom = this.getQueryParam['comfirmed_orders_from']
-        this.ComfirmedOrdersTo = this.getQueryParam['comfirmed_orders_to']
-      }
-    }
-  },
+	computed: {
+		getQueryParam() {
+			return this.$route.query ?? false
+		},
+	},
 
-  methods: {
-    HandeleInputFrom() {
-      this.$store.dispatch('COMFIRMED_ORDERS_FROM_ACTION', this.ComfirmedOrdersFrom)
-    },
+	methods: {
+		HandeleInputFrom() {
+			this.$store.dispatch(
+				"COMFIRMED_ORDERS_FROM_ACTION",
+				this.ComfirmedOrdersFrom
+			)
+		},
 
-    HandeleInputTo() {
-      this.$store.dispatch('COMFIRMED_ORDERS_TO_ACTION', this.ComfirmedOrdersTo)
-    }
-  },
+		HandeleInputTo() {
+			this.$store.dispatch("COMFIRMED_ORDERS_TO_ACTION", this.ComfirmedOrdersTo)
+		},
+	},
 }
 </script>
 
-<style lang="scss" scoped>
-.wrap {
-  display: flex;
-  flex-direction: column;
+<template>
+	<div :class="style.wrap">
+		<div :class="style.title">По подтвержденным заказам</div>
+		<div :class="style.inputs">
+			<input
+				v-model="ComfirmedOrdersFrom"
+				@input="HandeleInputFrom"
+				type="number"
+				placeholder="от"
+			/>
 
-  & .title {
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #6e6a6a;
-  }
+			<div :class="style.difis">&#8211;</div>
 
-  & .inputs {
-    width: 100%;
-    margin-top: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    & .difis {
-      margin: 0 3px;
-    }
-
-    & input {
-      width: 30%;
-      padding: 5px 0;
-      text-align: center;
-      color: #9d9b9b;
-
-      &:focus {
-        outline: none;
-      }
-    }
-  }
-}
-
-</style>
+			<input
+				v-model="ComfirmedOrdersTo"
+				@input="HandeleInputTo"
+				type="number"
+				placeholder="до"
+			/>
+		</div>
+	</div>
+</template>
