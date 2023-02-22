@@ -1,6 +1,7 @@
 * {
 	box-sizing: border-box;
 }
+
 #app {
 	margin: 0 auto;
 	display: flex;
@@ -9,4 +10,11 @@
 	justify-content: center;
 	padding: 40px;
 	width: 80%;
+}
+
+@media screen and (max-width: 380px) {
+	#app {
+		margin: 0 auto;
+		width: 95%;
+	}
 }
