@@ -1,5 +1,7 @@
 * {
 	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
 }
 
 #app {
@@ -15,6 +17,7 @@
 @media screen and (max-width: 380px) {
 	#app {
 		margin: 0 auto;
-		width: 95%;
+		padding: 0;
+		width: 100%;
 	}
 }
