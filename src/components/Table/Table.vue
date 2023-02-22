@@ -1,5 +1,5 @@
 <template>
-	<table>
+	<table :class="style.table">
 		<thead>
 			<tr>
 				<th v-for="thed in tHeadList" :key="thed.value">
@@ -20,10 +20,17 @@
 
 <script>
 import TR from "./TR.vue"
+import style from "./table.module.scss"
 
 export default {
 	components: {
 		TR,
+	},
+
+	data() {
+		return {
+			style,
+		}
 	},
 
 	computed: {

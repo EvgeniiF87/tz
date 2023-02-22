@@ -1,13 +1,9 @@
 <template>
-  <td> {{ value }} </td>
+	<td>{{ value }}</td>
 </template>
 
 <script>
-  export default {
-    props: ['value'],
-  }
+export default {
+	props: ["value"],
+}
 </script>
-
-<style scoped>
-
-</style>

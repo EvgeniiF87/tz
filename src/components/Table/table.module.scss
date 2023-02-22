@@ -1,0 +1,47 @@
+@import "../scss/media";
+
+.table {
+	width: 100%;
+	margin-top: 20px;
+	border: 0px;
+	border-collapse: collapse;
+	text-align: center;
+
+	& thead {
+		font-weight: bold;
+		color: #6e6a6a;
+	}
+
+	& td {
+		padding: 0.6rem 1rem;
+		border-bottom: 1px solid #e8e9eb;
+		color: #9d9b9b;
+	}
+
+	@include media-max("800px") {
+		thead {
+			display: none;
+		}
+
+		tr {
+			display: block;
+			margin-bottom: 1rem;
+			border-bottom: 2px solid #e8e9eb;
+		}
+
+		td {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			color: #9d9b9b;
+			font-size: 10px;
+		}
+
+		td:before {
+			content: attr(aria-label);
+			font-weight: bold;
+			font-size: 11px;
+			color: #6e6a6a;
+		}
+	}
+}

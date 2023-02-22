@@ -1,0 +1,18 @@
+@import "../scss/media";
+
+.input {
+	width: 80%;
+	padding: 10px 3px;
+	border-radius: 6px;
+	border: 1px solid #6e6a6a;
+	color: #9d9b9b;
+	font-size: 16px;
+
+	@include media-max("480px") {
+		font-size: 12px;
+	}
+
+	&:focus {
+		outline: none;
+	}
+}

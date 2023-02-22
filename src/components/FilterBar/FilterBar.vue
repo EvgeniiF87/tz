@@ -132,11 +132,11 @@ export default {
 		<Search />
 		<div :class="style.filter">
 			<button
-				v-if="windowWidth <= 799"
+				v-if="windowWidth <= 800"
 				:class="style.filter__btn"
 				@click.stop="HandleFilterBtn"
 			>
-				<IconBase :width="windowWidth <= 520 ? 16 : 18">
+				<IconBase :class="style.filter__icon">
 					<FilterIcon />
 				</IconBase>
 			</button>
