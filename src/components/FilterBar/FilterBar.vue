@@ -123,12 +123,6 @@ export default {
 		selectOrder(newValue) {
 			this.$store.dispatch("ORDER_VALUE_ACTION", newValue)
 		},
-
-		popup(newValue) {
-			if (newValue === true) {
-				this.selectStatusModel = this.getQueryParam["status"]
-			}
-		},
 	},
 }
 </script>
