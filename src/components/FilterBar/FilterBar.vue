@@ -101,6 +101,7 @@ export default {
 		},
 
 		HandleResetFiltered() {
+			this.popup = false
 			this.$router.push("/")
 		},
 
