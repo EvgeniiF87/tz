@@ -30,6 +30,7 @@ export default {
 			selectOrder: "",
 			popup: false,
 			windowWidth: 0,
+			resize: false,
 			style,
 		}
 	},
@@ -106,7 +107,6 @@ export default {
 		},
 
 		resizeHandle() {
-			console.log(document.documentElement.clientWidth)
 			this.windowWidth = document.documentElement.clientWidth
 		},
 	},
@@ -123,6 +123,14 @@ export default {
 		selectOrder(newValue) {
 			this.$store.dispatch("ORDER_VALUE_ACTION", newValue)
 		},
+
+		windowWidth(newValue) {
+			if (newValue <= 800 || newValue === 0) {
+				this.resize = true
+			} else {
+				this.resize = false
+			}
+		},
 	},
 }
 </script>
@@ -132,7 +140,7 @@ export default {
 		<Search />
 		<div :class="style.filter">
 			<button
-				v-if="windowWidth <= 800"
+				v-if="resize"
 				:class="style.filter__btn"
 				@click.stop="HandleFilterBtn"
 			>
