@@ -100,7 +100,12 @@ export default {
 			})
 		},
 
+		HandleResetFiltered() {
+			this.$router.push("/")
+		},
+
 		resizeHandle() {
+			console.log(document.documentElement.clientWidth)
 			this.windowWidth = document.documentElement.clientWidth
 		},
 	},
@@ -171,6 +176,10 @@ export default {
 
 				<button :class="style.result_btn" @click="HandleResult">
 					Применить
+				</button>
+
+				<button :class="style.result_btn" @click="HandleResetFiltered">
+					Ссбросить
 				</button>
 			</div>
 		</div>
